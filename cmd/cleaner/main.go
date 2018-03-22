@@ -66,11 +66,11 @@ func main() {
 
 		completion := job.Status.CompletionTime
 		if completion == nil {
-			l.Infof("job not yet finished. skipping...", name)
+			l.Info("job not yet finished. skipping...")
 			continue
 		}
 		if ignore, ok := job.Annotations[ignoreAnnotation]; ok && strings.ToLower(ignore) == "true" {
-			l.Infof("job is marked to ignore skipping")
+			l.Info("job is marked to ignore skipping")
 			continue
 		}
 
@@ -83,7 +83,7 @@ func main() {
 		}
 
 		if completion.Time.Add(time.Duration(secs) * time.Second).Before(time.Now()) {
-			l.Infof("job is ready for deletion. Deleting...")
+			l.Info("job is ready for deletion. Deleting...")
 			if err := clientset.BatchV1().Jobs(job.Namespace).Delete(name, nil); err != nil {
 				l.Errorf("delete: %+v", err)
 			}
